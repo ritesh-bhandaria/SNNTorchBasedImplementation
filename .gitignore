@@ -1,0 +1,6 @@
+/env/
+/__pycache__
+notes.txt
+seg_former_implementation.ipynb
+rateEncodingCheck.py
+RateEncoding.py

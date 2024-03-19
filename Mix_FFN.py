@@ -30,16 +30,16 @@ class Mix_FFN(nn.Module):
         
         x=self.dense1(x)
         spk1, mem1 = self.lif1(x, mem1)
-        print(f"spk1: {spk1.sum()}")
+        #print(f"spk1: {spk1.sum()}")
         
         x= self.conv(spk1)
         spk2, mem2 = self.lif2(x, mem2)
-        print(f"spk2: {spk2.sum()}")
+        #print(f"spk2: {spk2.sum()}")
         # x= self.relu(spk2)
         
         x=self.dense2(spk2)
         spk3, mem3 = self.lif3(x, mem3)
-        print(f"spk3: {spk3.sum()}")
+        #print(f"spk3: {spk3.sum()}")
         
         #print(f"Mix FFN output: {spk3.shape}")
         #print(spk3.sum())

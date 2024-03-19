@@ -6,6 +6,8 @@ import config
 import torch.utils.tensorboard as tb
 import numpy as np 
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 model = SegFormer(
     in_channels = config.in_channels,
     widths=config.widths,

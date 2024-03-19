@@ -2,6 +2,7 @@ from SegFormerEncoder import SegFormerEncoder
 from Decoder import Decoder
 from SegmentationHead import SegmentationHead
 from torch import nn
+from ClassificationHead import SegformerClassification
 
 class SegFormer(nn.Module):
     def __init__(
@@ -36,9 +37,12 @@ class SegFormer(nn.Module):
         self.seghead = SegmentationHead(
             decoder_channels, num_classes, num_features=len(widths)
         )
+        self.classhead = SegformerClassification(num_classes, 1024)
 
     def forward(self, x):
         features = self.encoder(x)
         features = self.decoder(features[::-1])
-        segmentation = self.seghead(features)
+        #print(features[0].shape)
+        #segmentation = self.seghead(features)
+        segmentation = self.classhead(features)
         return segmentation

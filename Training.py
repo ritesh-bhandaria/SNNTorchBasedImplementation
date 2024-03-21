@@ -4,9 +4,19 @@ import torch
 from SegFormer import SegFormer
 import config
 import torch.utils.tensorboard as tb
-import numpy as np 
+import numpy as np
+
+from Dataloader_copy import GetData
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+GetData_obj = GetData(batch_size=config.batch_size)
+train_loader = GetData_obj.train_dataloader()
+val_loader = GetData_obj.val_dataloader()
+
+
+print(f"train_dataloader ready\n number of batches = {len(train_loader)}")
+print(f"val_dataloader ready\n number of batches = {len(val_loader)}")
 
 model = SegFormer(
     in_channels = config.in_channels,
@@ -33,8 +43,6 @@ writer = tb.SummaryWriter()
 
 best_val_loss = np.inf
 
-scheduler.step()
-
 def batch_accuracy(train_loader, net, num_steps):
   with torch.no_grad():
     total = 0
@@ -55,9 +63,8 @@ def batch_accuracy(train_loader, net, num_steps):
 def forward_pass(net, num_steps, data):
   spk_rec = []
   utils.reset(net)  # resets hidden states for all LIF neurons in net
-
   for step in range(num_steps):
-      spk_out = model(data)
+      spk_out = model(data[step])
       spk_rec.append(spk_out)
 
   return torch.stack(spk_rec)
@@ -77,7 +84,7 @@ for epoch in range(num_epochs):
         optimizer.zero_grad()
         loss_val.backard()
         optimizer.step()
-
+        scheduler.step()
         loss_hist.append(loss_val.item())
 
         # validation set
@@ -100,7 +107,9 @@ writer.close()
 #CHECKPOINTS NOT IMPLEMENTED    
 
      
-
+'''
+ye wale comments lightning module ke hai ye kaam bhi nahi karta
+'''
 # class SegFormerDataModule(pl.LightningDataModule):
     
 #     def __init__(self, batch_size):

@@ -4,3 +4,6 @@ notes.txt
 seg_former_implementation.ipynb
 rateEncodingCheck.py
 RateEncoding.py
+/outputs
+/.venv
+/runs

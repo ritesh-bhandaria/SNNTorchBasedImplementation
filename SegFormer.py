@@ -43,6 +43,6 @@ class SegFormer(nn.Module):
         features = self.encoder(x)
         features = self.decoder(features[::-1])
         #print(features[0].shape)
-        #segmentation = self.seghead(features)
-        segmentation = self.classhead(features)
+        segmentation = self.seghead(features)
+        #segmentation = self.classhead(features)
         return segmentation
